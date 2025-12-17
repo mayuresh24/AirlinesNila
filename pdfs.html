@@ -15,6 +15,7 @@
   --muted:#9aa4b2;
 }
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Inter,system-ui;
@@ -22,68 +23,96 @@ body{
   color:#e6eef8;
   padding:16px;
 }
-.container{max-width:1200px;margin:auto}
 
+.container{
+  max-width:1100px;
+  margin:auto;
+}
+
+/* Header */
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:14px;
+  margin-bottom:16px;
 }
 .logo{
-  width:44px;height:44px;
+  width:46px;
+  height:46px;
   background:linear-gradient(135deg,var(--accent),#4ec5c1);
   border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;color:#051022;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#051022;
 }
 h1{margin:0;font-size:20px}
 .sub{font-size:13px;color:var(--muted)}
 
-.layout{
+a.back{
+  color:#fff;
+  text-decoration:none;
+  font-size:14px;
+}
+
+/* Controls */
+.controls{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+input,select{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.1);
+  background:transparent;
+  color:#fff;
+  font-size:14px;
+}
+
+/* List */
+.list{
   display:grid;
-  grid-template-columns:320px 1fr;
-  gap:14px;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 @media(max-width:900px){
-  .layout{grid-template-columns:1fr}
+  .list{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .list{grid-template-columns:1fr}
 }
 
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
 .card{
   background:var(--card);
-  padding:12px;
+  padding:14px;
   border-radius:12px;
   cursor:pointer;
+  transition:0.2s;
 }
-.card:hover{outline:2px solid var(--accent)}
-.card h3{margin:0;font-size:14px}
-.meta{font-size:12px;color:var(--muted)}
-
-.viewer{
-  background:var(--card);
-  border-radius:12px;
-  padding:10px;
-  overflow:auto;
-  min-height:70vh;
+.card:hover{
+  outline:2px solid var(--accent);
+  transform:translateY(-2px);
 }
-canvas{
-  width:100%;
-  margin-bottom:12px;
-  border-radius:8px;
-  background:#fff;
+.card h3{
+  margin:0 0 6px 0;
+  font-size:14px;
+}
+.meta{
+  font-size:12px;
+  color:var(--muted);
 }
 
+/* Footer */
 footer{
-  margin-top:16px;
+  margin-top:20px;
   font-size:13px;
   color:var(--muted);
   display:flex;
   justify-content:space-between;
+  flex-wrap:wrap;
 }
 </style>
 </head>
@@ -92,81 +121,89 @@ footer{
 <div class="container">
 
 <header>
-  <div style="display:flex;gap:10px;align-items:center">
+  <div style="display:flex;gap:12px;align-items:center">
     <div class="logo">NI</div>
     <div>
       <h1>PDF Interview Library</h1>
-      <div class="sub">Tap a PDF → view instantly</div>
+      <div class="sub">Tap a PDF to view (no download)</div>
     </div>
   </div>
-  <a href="index.html" style="color:#fff;text-decoration:none">← Home</a>
+  <a href="index.html" class="back">← Home</a>
 </header>
 
-<div class="layout">
-  <div id="list" class="list"></div>
-
-  <div id="viewer" class="viewer">
-    <div class="meta">Select a PDF to view</div>
-  </div>
+<div class="controls">
+  <input id="search" placeholder="Search PDF..." oninput="renderList()">
+  <select id="filter" onchange="renderList()">
+    <option value="all">All</option>
+    <option value="interview">Interview</option>
+    <option value="mock">Mock</option>
+    <option value="assignment">Assignment</option>
+    <option value="grooming">Grooming</option>
+  </select>
 </div>
 
+<div id="pdfList" class="list"></div>
+
 <footer>
-  <div>📘 Powered by PDF.js</div>
+  <div>📘 PDFs hosted on GitHub</div>
   <div>© Nai Airlines Dream</div>
 </footer>
 
 </div>
 
-<!-- PDF.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
 let pdfs = [];
 
+/* Load PDFs from resources.json */
 async function loadPDFs(){
-  const res = await fetch(
-    "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/resources.json"
-  );
-  const data = await res.json();
-  pdfs = data.filter(d => d.type === "pdf").slice(0,50);
-  renderList();
+  const url =
+    "https://raw.githubusercontent.com/USERNAME/REPO/main/resources.json";
+
+  try{
+    const res = await fetch(url);
+    const data = await res.json();
+
+    // take first 50 PDFs
+    pdfs = data.filter(d => d.type === "pdf").slice(0,50);
+    renderList();
+  }catch(e){
+    document.getElementById("pdfList").innerHTML =
+      "<div>Failed to load PDFs</div>";
+  }
 }
 
+/* Render list */
 function renderList(){
-  const list = document.getElementById("list");
+  const q = document.getElementById("search").value.toLowerCase();
+  const tag = document.getElementById("filter").value;
+  const list = document.getElementById("pdfList");
   list.innerHTML = "";
-  pdfs.forEach((p,i)=>{
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-      <h3>${i+1}. ${p.title}</h3>
-      <div class="meta">${(p.tags||[]).join(", ")}</div>
-    `;
-    div.onclick = ()=>openPDF(p.url);
-    list.appendChild(div);
-  });
-}
 
-async function openPDF(url){
-  const viewer = document.getElementById("viewer");
-  viewer.innerHTML = "";
+  pdfs
+    .filter(p=>{
+      const textMatch = p.title.toLowerCase().includes(q);
+      const tagMatch = tag==="all" || (p.tags||[]).includes(tag);
+      return textMatch && tagMatch;
+    })
+    .forEach((p,i)=>{
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        <h3>${i+1}. ${p.title}</h3>
+        <div class="meta">${(p.tags||[]).join(", ")}</div>
+      `;
 
-  const pdf = await pdfjsLib.getDocument(url).promise;
+      /* Redirect to PDF viewer page */
+      div.onclick = () => {
+        window.location.href =
+          `pdf_viewer.html?url=${encodeURIComponent(p.url)}&title=${encodeURIComponent(p.title)}`;
+      };
 
-  for(let pageNum=1; pageNum<=pdf.numPages; pageNum++){
-    const page = await pdf.getPage(pageNum);
-    const viewport = page.getViewport({ scale: 1.5 });
+      list.appendChild(div);
+    });
 
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    await page.render({ canvasContext: ctx, viewport }).promise;
-    viewer.appendChild(canvas);
+  if(list.innerHTML === ""){
+    list.innerHTML = "<div>No PDFs found</div>";
   }
 }
 
