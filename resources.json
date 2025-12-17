@@ -5,6 +5,13 @@
     "type": "pdf",
     "tags": ["interview", "basics"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/5 Interview Questions.pdf"
+  } ,
+    {
+    "id": 2,
+    "title": "MCQ Assignment.pdf",
+    "type": "pdf",
+    "tags": ["MCQ", "basics"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/pdfs/MCQ ASSIGNMENT1.pdf"
   } 
 
 ]
