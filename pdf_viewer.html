@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Viewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1724;--card:#0b1220;--accent:#7c5cff;--muted:#9aa4b2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#071023,var(--bg));color:#e6eef8}
+header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#020617;position:sticky;top:0;z-index:10}
+.back{color:#fff;text-decoration:none;font-weight:600}
+.title{font-size:14px;color:var(--muted)}
+#viewer{padding:12px}
+canvas{width:100%;margin-bottom:12px;border-radius:8px;background:#fff}
+</style>
+</head>
+<body>
+<header>
+  <a href="javascript:history.back()" class="back">← Back</a>
+  <div class="title" id="title">Loading PDF…</div>
+</header>
+
+<div id="viewer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const params = new URLSearchParams(location.search);
+const url = params.get("url");
+const title = params.get("title") || "PDF Viewer";
+document.getElementById("title").textContent = title;
+
+async function openPDF(){
+  const viewer = document.getElementById("viewer");
+  const pdf = await pdfjsLib.getDocument(url).promise;
+  for(let i=1;i<=pdf.numPages;i++){
+    const page = await pdf.getPage(i);
+    const viewport = page.getViewport({scale:1.5});
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    await page.render({canvasContext:ctx,viewport}).promise;
+    viewer.appendChild(canvas);
+  }
+}
+
+openPDF();
+</script>
+</body>
+</html>
