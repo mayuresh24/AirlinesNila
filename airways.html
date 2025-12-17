@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nai Airlines — Airhostess Interview Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Mock interviews, PDFs, tips & motivation to help Nai reach her air-hostess dreams." />
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#7c5cff; --glass: rgba(255,255,255,0.04);
+      --radius:14px; --max-w:1100px; --gap:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#071023 0%, var(--bg) 100%); color:#e6eef8; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; padding:28px 18px;
+      display:flex; justify-content:center;
+    }
+    .wrap{width:100%;max-width:var(--max-w)}
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4ec5c1);display:flex;align-items:center;justify-content:center;font-weight:800;color:#051022;font-size:22px}
+    .brand h1{margin:0;font-size:18px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    nav{display:flex;gap:10px;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;font-weight:600;color:var(--muted);cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#4ec5c1);color:#022; border:none}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:center;margin-bottom:26px}
+    @media (max-width:880px){.hero{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:var(--radius); padding:20px; box-shadow: 0 6px 18px rgba(2,6,23,0.6);}
+    .hero-left h2{margin:0 0 8px 0;font-size:22px}
+    .hero-left p{margin:0 0 14px 0;color:var(--muted)}
+    .links{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* Search + Filters */
+    .controls{display:flex;gap:12px;align-items:center;margin-top:10px}
+    .search{flex:1;display:flex;gap:8px}
+    .search input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    .select{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+
+    /* Resource grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);margin-top:16px}
+    @media (max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:700px){.grid{grid-template-columns:1fr}}
+    .resource{padding:16px;border-radius:12px;background:var(--card);display:flex;flex-direction:column;gap:8px}
+    .resource h3{margin:0;font-size:16px}
+    .meta{font-size:12px;color:var(--muted)}
+    .resource .actions{margin-top:auto;display:flex;gap:8px}
+    .chip{padding:6px 8px;border-radius:999px;background:var(--glass);font-size:12px;color:var(--muted)}
+
+    /* Sidebar / Quick tips */
+    .side{display:flex;flex-direction:column;gap:12px}
+    .motivation{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent)}
+    .motivation p{margin:0}
+    .daily{font-weight:700}
+
+    /* Footer */
+    footer{margin-top:24px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(4,6,12,0.6);z-index:60}
+    .modal.open{display:flex}
+    .modal .box{width:92%;max-width:880px;background:#021022;border-radius:12px;padding:12px}
+    .close{background:transparent;border:0;color:var(--muted);font-weight:700;cursor:pointer}
+
+    /* little helpers */
+    .small{font-size:13px;color:var(--muted)}
+    .badge{padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.03);font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">NI</div>
+        <div>
+          <h1>Nai Airlines — Interview Hub</h1>
+          <p>Helping Nai reach the skies — PDFs, mock interviews, tips & motivation</p>
+        </div>
+      </div>
+      <nav>
+        <button class="btn" onclick="scrollToSection('resources')">Resources</button>
+        <button class="btn" onclick="scrollToSection('videos')">Videos</button>
+        <button class="btn" onclick="scrollToSection('tips')">Quick Tips</button>
+        <a class="btn primary" href="#" id="githubBtn">Open GitHub</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="card hero-left">
+        <h2>All-in-one place for Airhostess interviews</h2>
+        <p>PDFs, mock interviews, assignments, motivational texts and curated videos — organized and mobile-friendly so Nai can practise anywhere.</p>
+        <div class="links">
+          <button class="btn primary" onclick="openRandomMock()">Start a Mock Interview</button>
+          <button class="btn" onclick="copyShareLink()">Copy Share Link</button>
+        </div>
+
+        <div class="card" style="margin-top:14px;padding:12px">
+          <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px">
+              <div class="small">Search resources</div>
+              <div class="controls">
+                <div class="search">
+                  <input id="q" placeholder="Search by title, tag or type" oninput="renderResources()" />
+                  <button class="btn" onclick="clearSearch()">Clear</button>
+                </div>
+                <select id="filter" class="select" onchange="renderResources()">
+                  <option value="all">All types</option>
+                  <option value="pdf">PDFs</option>
+                  <option value="video">Videos</option>
+                  <option value="song">Songs</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="side" style="min-width:220px">
+              <div class="motivation">
+                <div class="small">Daily motivation</div>
+                <div class="daily" id="dailyText">Loading…</div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <button class="btn" onclick="nextMotivation()">Next</button>
+                  <button class="btn" onclick="saveMotivation()">Save</button>
+                </div>
+              </div>
+
+              <div class="card small">
+                <div class="small">Quick action</div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <button class="btn" onclick="openSection('tips')">Interview Tips</button>
+                  <button class="btn" onclick="openSection('videos')">Watch Videos</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card" style="height:100%">
+        <h3 style="margin-top:0">Profile</h3>
+        <p class="small">Nai — Airhostess aspirant</p>
+        <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="badge">Daily Drill</div>
+          <div class="badge">Mock Interview</div>
+          <div class="badge">PDF Library</div>
+          <div class="badge">Motivation</div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="small">Pro tip</div>
+          <p style="margin:6px 0 0 0;color:var(--muted);font-size:13px">Rehearse answers aloud and record voice — listen back and improve tone & clarity.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources" class="card">
+      <h2 style="margin-top:0">Resources</h2>
+      <p class="small">Organized PDFs, mock interviews, assignments and audio/video that are stored in a GitHub repo. (Replace sample links with your repo links.)</p>
+
+      <div id="grid" class="grid"></div>
+
+    </section>
+
+    <section id="videos" class="card" style="margin-top:18px">
+      <h2 style="margin-top:0">Videos</h2>
+      <div id="videoGrid" class="grid"></div>
+    </section>
+
+    <section id="tips" class="card" style="margin-top:18px">
+      <h2 style="margin-top:0">Quick tips before interview</h2>
+      <ol>
+        <li>Always research the airline & its values.</li>
+        <li>Arrive 15 minutes early—dress neat and professional.</li>
+        <li>Speak slowly, smile, keep answers short & structured.</li>
+        <li>Highlight teamwork, safety mindset and customer care examples.</li>
+        <li>Ask 1–2 thoughtful questions at the end (training, culture).</li>
+      </ol>
+    </section>
+
+    <footer>
+      <div>Built with ❤️ for Nai • Replace placeholders with your GitHub repo files</div>
+      <div class="small">© Nai Airlines Hub</div>
+    </footer>
+  </div>
+
+  <!-- Modal viewer -->
+  <div id="modal" class="modal" role="dialog" aria-hidden="true">
+    <div class="box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong id="modalTitle"></strong>
+        <div>
+          <button class="btn" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+      <div id="modalContent" style="min-height:360px"></div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- SAMPLE DATA: replace urls with your GitHub/raw links ----------
+    const resources = [
+      {id:1,title:'Airhostess Interview Q&A — PDF',type:'pdf',tags:['qa','interview'],url:'https://raw.githubusercontent.com/username/repo/main/pdfs/airhostess_qa.pdf'},
+      {id:2,title:'Mock Interview Set 1 — PDF',type:'pdf',tags:['mock','interview'],url:'https://raw.githubusercontent.com/username/repo/main/pdfs/mock1.pdf'},
+      {id:3,title:'Assignment: Inflight Service — PDF',type:'pdf',tags:['assignment'],url:'Air Hostess Interview Q&A[10thDec2025].pdf'},
+      {id:4,title:'Confidence Boost — Short Video',type:'video',tags:['motivation'],url:'https://www.youtube.com/embed/VIDEO_ID'},
+      {id:5,title:'Pronunciation Practice — Audio',type:'song',tags:['audio','practice'],url:'https://raw.githubusercontent.com/username/repo/main/audio/pronunciation.mp3'}
+    ];
+
+    const motivations = [
+      'Small steps every day — the skies reward consistent practice.',
+      'Speak with kindness — confidence follows clarity.',
+      'Your smile is part of the uniform — wear it with pride.',
+      'Mistakes are rehearsal for success — keep practicing.'
+    ];
+
+    // ---------- DOM helpers ----------
+    const grid = document.getElementById('grid');
+    const videoGrid = document.getElementById('videoGrid');
+
+    function renderResources(){
+      const q = (document.getElementById('q').value || '').toLowerCase();
+      const filter = document.getElementById('filter').value;
+      grid.innerHTML=''; videoGrid.innerHTML='';
+      const filtered = resources.filter(r=>{
+        if(filter!=='all' && r.type!==filter) return false;
+        if(q==='') return true;
+        return (r.title||'').toLowerCase().includes(q) || (r.tags||[]).join(' ').includes(q);
+      });
+
+      filtered.forEach(r=>{
+        const el = document.createElement('div'); el.className='resource';
+        el.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3>${r.title}</h3>
+            <div class="chip">${r.type.toUpperCase()}</div>
+          </div>
+          <div class="meta">${(r.tags||[]).join(', ')}</div>
+          <div class="actions">
+            <button class="btn" onclick='viewResource(${r.id})'>View</button>
+            <a class="btn" href="${r.url}" target="_blank" rel="noopener noreferrer">Open</a>
+          </div>
+        `;
+        if(r.type==='video') videoGrid.appendChild(el); else grid.appendChild(el);
+      });
+
+      if(grid.innerHTML==='') grid.innerHTML='<div class="small" style="grid-column:1/-1">No resources found — add files to GitHub and update the data array.</div>';
+      if(videoGrid.innerHTML==='') videoGrid.innerHTML='<div class="small" style="grid-column:1/-1">No videos — add YouTube embed links or hosted MP4 links.</div>';
+    }
+
+    function viewResource(id){
+      const r = resources.find(x=>x.id===id);
+      if(!r) return;
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modalTitle');
+      const content = document.getElementById('modalContent');
+      title.textContent = r.title;
+      content.innerHTML='';
+      if(r.type==='pdf'){
+        // Use iframe to preview raw GitHub PDF (CORS may apply) — consider hosting in GitHub Pages or using Google Drive/embed service
+        content.innerHTML = `<iframe src="${r.url}" style="width:100%;height:540px;border:0;border-radius:8px"></iframe>`;
+      } else if(r.type==='video'){
+        content.innerHTML = `<div style="position:relative;padding-top:56.25%"><iframe src="${r.url}" frameborder="0" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border-radius:8px"></iframe></div>`;
+      } else if(r.type==='song'){
+        content.innerHTML = `<audio controls style="width:100%"><source src="${r.url}"></audio>`;
+      } else {
+        content.innerHTML = `<a href="${r.url}" target="_blank">Open resource</a>`;
+      }
+      modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){ document.getElementById('modal').classList.remove('open'); document.getElementById('modal').setAttribute('aria-hidden','true'); }
+
+    function openRandomMock(){
+      const mocks = resources.filter(r=>r.tags && r.tags.includes('mock'));
+      if(mocks.length===0){ alert('No mock interviews found — add mock PDFs to the resources array (tag: mock).'); return; }
+      viewResource(mocks[Math.floor(Math.random()*mocks.length)].id);
+    }
+
+    function copyShareLink(){
+      const link = location.href; navigator.clipboard?.writeText(link).then(()=>alert('Share link copied')); }
+    function clearSearch(){ document.getElementById('q').value=''; renderResources(); }
+    function scrollToSection(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
+    function openSection(id){ scrollToSection(id); }
+
+    // Motivation logic
+    let mi = 0; function showMotivation(){ document.getElementById('dailyText').textContent = motivations[mi % motivations.length]; }
+    function nextMotivation(){ mi++; showMotivation(); }
+    function saveMotivation(){ localStorage.setItem('nai_saved_motivation', motivations[mi % motivations.length]); alert('Saved to local browser storage'); }
+
+    // Setup github button — change to your repo
+    document.getElementById('githubBtn').href = 'https://github.com/username/repo';
+
+    // init
+    document.addEventListener('DOMContentLoaded', ()=>{ showMotivation(); renderResources();
+      // accessibility: close modal on esc
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+    });
+  </script>
+</body>
+</html>

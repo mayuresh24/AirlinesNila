@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nai Airlines – PDF Library</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --accent:#7c5cff;
+  --muted:#9aa4b2;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:linear-gradient(180deg,#071023,var(--bg));
+  color:#e6eef8;
+  padding:24px;
+}
+.container{max-width:1100px;margin:auto}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.logo{
+  width:48px;height:48px;
+  background:linear-gradient(135deg,var(--accent),#4ec5c1);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#051022;
+}
+h1{margin:0;font-size:20px}
+.sub{color:var(--muted);font-size:13px}
+
+.controls{
+  display:flex;
+  gap:10px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+input,select{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:transparent;
+  color:#fff;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.grid{grid-template-columns:1fr}}
+
+.card{
+  background:var(--card);
+  padding:14px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.card h3{margin:0;font-size:15px}
+.meta{font-size:12px;color:var(--muted)}
+.actions{margin-top:auto;display:flex;gap:8px}
+a.btn{
+  padding:8px 10px;
+  border-radius:8px;
+  font-size:13px;
+  text-decoration:none;
+  color:#041022;
+  background:linear-gradient(90deg,var(--accent),#4ec5c1);
+}
+a.btn.secondary{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+}
+
+footer{
+  margin-top:24px;
+  font-size:13px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div style="display:flex;gap:12px;align-items:center">
+    <div class="logo">NI</div>
+    <div>
+      <h1>PDF Interview Library</h1>
+      <div class="sub">Top 50 Airhostess PDFs</div>
+    </div>
+  </div>
+  <a href="index.html" class="btn secondary">← Home</a>
+</header>
+
+<div class="controls">
+  <input id="search" placeholder="Search PDF..." oninput="render()">
+  <select id="filter" onchange="render()">
+    <option value="all">All</option>
+    <option value="interview">Interview</option>
+    <option value="mock">Mock</option>
+    <option value="assignment">Assignment</option>
+    <option value="grooming">Grooming</option>
+  </select>
+</div>
+
+<div id="grid" class="grid"></div>
+
+<footer>
+  <div>📘 PDFs hosted on GitHub</div>
+  <div>© Nai Airlines Dream</div>
+</footer>
+
+</div>
+
+<script>
+let pdfs = [];
+
+async function loadPDFs(){
+  const url = "https://raw.githubusercontent.com/USERNAME/REPO/main/resources.json";
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  pdfs = data.filter(d => d.type === "pdf").slice(0,50);
+  render();
+}
+
+function render(){
+  const q = document.getElementById("search").value.toLowerCase();
+  const tag = document.getElementById("filter").value;
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  pdfs.filter(p=>{
+    const textMatch = p.title.toLowerCase().includes(q);
+    const tagMatch = tag==="all" || (p.tags||[]).includes(tag);
+    return textMatch && tagMatch;
+  }).forEach((p,i)=>{
+    grid.innerHTML += `
+      <div class="card">
+        <h3>${i+1}. ${p.title}</h3>
+        <div class="meta">${(p.tags||[]).join(", ")}</div>
+        <div class="actions">
+          <a class="btn" href="${p.url}" target="_blank">Open</a>
+          <a class="btn secondary" href="${p.url}" download>Download</a>
+        </div>
+      </div>
+    `;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadPDFs);
+</script>
+
+</body>
+</html>
+
