@@ -20,7 +20,7 @@ body{
   font-family:Inter,system-ui;
   background:linear-gradient(180deg,#071023,var(--bg));
   color:#e6eef8;
-  padding:20px;
+  padding:16px;
 }
 .container{max-width:1200px;margin:auto}
 
@@ -28,10 +28,10 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:16px;
+  margin-bottom:14px;
 }
 .logo{
-  width:46px;height:46px;
+  width:44px;height:44px;
   background:linear-gradient(135deg,var(--accent),#4ec5c1);
   border-radius:12px;
   display:flex;align-items:center;justify-content:center;
@@ -40,24 +40,10 @@ header{
 h1{margin:0;font-size:20px}
 .sub{font-size:13px;color:var(--muted)}
 
-.controls{
-  display:flex;
-  gap:10px;
-  margin-bottom:14px;
-  flex-wrap:wrap;
-}
-input,select{
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.1);
-  background:transparent;
-  color:#fff;
-}
-
 .layout{
   display:grid;
-  grid-template-columns:360px 1fr;
-  gap:16px;
+  grid-template-columns:320px 1fr;
+  gap:14px;
 }
 @media(max-width:900px){
   .layout{grid-template-columns:1fr}
@@ -82,17 +68,18 @@ input,select{
   background:var(--card);
   border-radius:12px;
   padding:10px;
+  overflow:auto;
   min-height:70vh;
 }
-iframe{
+canvas{
   width:100%;
-  height:70vh;
-  border:none;
-  border-radius:10px;
+  margin-bottom:12px;
+  border-radius:8px;
+  background:#fff;
 }
 
 footer{
-  margin-top:20px;
+  margin-top:16px;
   font-size:13px;
   color:var(--muted);
   display:flex;
@@ -105,78 +92,82 @@ footer{
 <div class="container">
 
 <header>
-  <div style="display:flex;gap:12px;align-items:center">
+  <div style="display:flex;gap:10px;align-items:center">
     <div class="logo">NI</div>
     <div>
       <h1>PDF Interview Library</h1>
-      <div class="sub">View PDFs directly — no download</div>
+      <div class="sub">Tap a PDF → view instantly</div>
     </div>
   </div>
   <a href="index.html" style="color:#fff;text-decoration:none">← Home</a>
 </header>
 
-<div class="controls">
-  <input id="search" placeholder="Search PDF..." oninput="render()">
-  <select id="filter" onchange="render()">
-    <option value="all">All</option>
-    <option value="interview">Interview</option>
-    <option value="mock">Mock</option>
-    <option value="assignment">Assignment</option>
-    <option value="grooming">Grooming</option>
-  </select>
-</div>
-
 <div class="layout">
   <div id="list" class="list"></div>
 
-  <div class="viewer">
-    <iframe id="pdfFrame"></iframe>
-    <div id="hint" class="meta">Select a PDF from the left to view here</div>
+  <div id="viewer" class="viewer">
+    <div class="meta">Select a PDF to view</div>
   </div>
 </div>
 
 <footer>
-  <div>📘 PDFs loaded from GitHub</div>
+  <div>📘 Powered by PDF.js</div>
   <div>© Nai Airlines Dream</div>
 </footer>
 
 </div>
 
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
 let pdfs = [];
 
 async function loadPDFs(){
-  const url = "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/resources.json";
-  const res = await fetch(url);
+  const res = await fetch(
+    "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/resources.json"
+  );
   const data = await res.json();
   pdfs = data.filter(d => d.type === "pdf").slice(0,50);
-  render();
+  renderList();
 }
 
-function render(){
-  const q = document.getElementById("search").value.toLowerCase();
-  const tag = document.getElementById("filter").value;
+function renderList(){
   const list = document.getElementById("list");
   list.innerHTML = "";
-
-  pdfs.filter(p=>{
-    return (p.title.toLowerCase().includes(q)) &&
-           (tag==="all" || (p.tags||[]).includes(tag));
-  }).forEach((p,i)=>{
+  pdfs.forEach((p,i)=>{
     const div = document.createElement("div");
     div.className = "card";
-    div.onclick = ()=>openPDF(p.url);
     div.innerHTML = `
       <h3>${i+1}. ${p.title}</h3>
       <div class="meta">${(p.tags||[]).join(", ")}</div>
     `;
+    div.onclick = ()=>openPDF(p.url);
     list.appendChild(div);
   });
 }
 
-function openPDF(url){
-  document.getElementById("pdfFrame").src = url;
-  document.getElementById("hint").style.display = "none";
+async function openPDF(url){
+  const viewer = document.getElementById("viewer");
+  viewer.innerHTML = "";
+
+  const pdf = await pdfjsLib.getDocument(url).promise;
+
+  for(let pageNum=1; pageNum<=pdf.numPages; pageNum++){
+    const page = await pdf.getPage(pageNum);
+    const viewport = page.getViewport({ scale: 1.5 });
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    viewer.appendChild(canvas);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", loadPDFs);
