@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "title": "Airhostess Interview Basics",
+    "title": "5 Interview Q And A",
     "type": "pdf",
     "tags": ["interview", "basics"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/5 Interview Questions.pdf"
@@ -12,6 +12,34 @@
     "type": "pdf",
     "tags": ["MCQ", "basics"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/MCQ ASSIGNMENT1.pdf"
-  } 
+  } ,
+  {
+    "id": 3,
+    "title": "20 Interview Q And A",
+    "type": "pdf",
+    "tags": ["Interview", "basics"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/20 Interview QandA.pdf"
+  } ,
+  {
+    "id": 4,
+    "title": "STAR Principle Interview",
+    "type": "pdf",
+    "tags": ["Interview", "basics"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/STAR_MCQ1.pdf"
+  } ,
+  {
+    "id": 5,
+    "title": "STAR Principle,MCQs and Tech Interview",
+    "type": "pdf",
+    "tags": ["Interview", "basics"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/STAR_MCQ_TECH1.pdf"
+  } ,
+  {
+    "id": 6,
+    "title": "Technical Interview",
+    "type": "pdf",
+    "tags": ["Interview", "Technical"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/TECHNICAL1.pdf"
+  }
 
 ]
