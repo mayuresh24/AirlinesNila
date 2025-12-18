@@ -24,61 +24,34 @@ body{
   padding:14px;
 }
 .container{max-width:900px;margin:auto}
-
-header{
-  text-align:center;
-  margin-bottom:18px;
-}
+header{text-align:center;margin-bottom:12px}
 h1{margin:0;font-size:22px}
 .sub{font-size:13px;color:var(--muted)}
 
-.card{
-  background:var(--card);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:16px;
-}
+.progress{height:8px;background:#ffd6e5;border-radius:8px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:var(--accent);width:0%}
 
-.question{
-  margin-bottom:14px;
-}
-.question h3{
-  margin:0 0 8px;
-  font-size:15px;
-}
-.option{
-  display:block;
-  padding:10px;
-  margin-bottom:8px;
-  border-radius:10px;
-  border:1px solid rgba(233,30,99,0.25);
-  cursor:pointer;
-}
-.option input{margin-right:8px}
-
-button{
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  padding:10px 16px;
-  border-radius:12px;
-  font-size:14px;
-  cursor:pointer;
-}
-
-.result{
-  margin-top:14px;
-  padding:12px;
-  border-radius:12px;
-  background:#ffd6e5;
-}
-
-footer{
-  text-align:center;
+.controls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-size:13px;
-  color:var(--muted);
-  margin-top:20px;
+  margin-bottom:10px;
 }
+.controls label{cursor:pointer}
+
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px}
+.q{margin-bottom:14px}
+.q h3{font-size:15px;margin:0 0 8px}
+.opt{display:block;padding:10px;border:1px solid rgba(233,30,99,.3);border-radius:10px;margin-bottom:6px}
+button{
+  background:var(--accent);color:#fff;border:none;
+  padding:10px 16px;border-radius:12px;font-size:14px;
+}
+.result{background:#ffd6e5;padding:14px;border-radius:12px;margin-top:12px}
+.review{background:#fff;border-radius:10px;padding:10px;margin-bottom:8px;font-size:13px}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
+.timer{font-weight:600;color:#b0004f}
 </style>
 </head>
 
@@ -87,138 +60,153 @@ footer{
 
 <header>
   <h1>✈️ Mock Interview Assessment</h1>
-  <div class="sub">Answer calmly • No rush • Learn as you go</div>
+  <div class="sub">One step at a time • Calm & focused</div>
+  <div class="progress"><div id="bar"></div></div>
+
+  <div class="controls">
+    <label>
+      <input type="checkbox" id="timerToggle"> ⏱️ Timer mode
+    </label>
+    <div id="timer" class="timer"></div>
+  </div>
 </header>
 
-<div id="assessment" class="card"></div>
+<div id="box" class="card"></div>
 
-<footer>
-Nai 💗 One step at a time
-</footer>
+<footer>Nai 💗 Progress matters more than perfection</footer>
 
 </div>
 
 <script>
-const assessments = [
-  {
-    title:"Assessment 1",
-    questions:[
-      {
-        q:"What is the primary responsibility of a cabin crew?",
-        options:["Serving food","Passenger safety","Selling products","Announcements"],
-        answer:1
-      },
-      {
-        q:"STAR method is used to answer?",
-        options:["Technical questions","Behavioral questions","English grammar","MCQs"],
-        answer:1
-      },
-      {
-        q:"If a passenger is angry, what should you do first?",
-        options:["Argue","Ignore","Listen calmly","Call security"],
-        answer:2
-      },
-      {
-        q:"Life jacket should be inflated?",
-        options:["Inside aircraft","Outside aircraft","Before landing","Never"],
-        answer:1
-      },
-      {
-        q:"Good grooming reflects?",
-        options:["Personality","Professionalism","Fashion","Attitude"],
-        answer:1
-      }
-    ]
-  },
-  {
-    title:"Assessment 2",
-    questions:[
-      {
-        q:"Which quality is most important for cabin crew?",
-        options:["Confidence","Calmness","Height","Looks"],
-        answer:1
-      },
-      {
-        q:"English communication should be?",
-        options:["Fast","Complex","Clear & polite","Slang"],
-        answer:2
-      },
-      {
-        q:"Brace position is used to?",
-        options:["Sleep","Reduce injury","Comfort","Exercise"],
-        answer:1
-      },
-      {
-        q:"When unsure of an answer, you should?",
-        options:["Guess","Lie","Pause & think","Stay silent"],
-        answer:2
-      },
-      {
-        q:"Professional makeup should be?",
-        options:["Heavy","Bright","Neat & subtle","No makeup"],
-        answer:2
-      }
-    ]
-  }
-  // 👉 Continue adding till 20 assessments (100 questions)
-];
+let data, ass=0, totalScore=0;
+let categoryScore = {};
+let timerInterval, timeLeft=300;
 
-let current = 0;
+fetch('mock_questions_full.json')
+.then(r=>r.json())
+.then(j=>{
+  data=j.assessments;
+  loadState();
+  loadAssessment();
+});
 
 function loadAssessment(){
-  const box = document.getElementById("assessment");
-  const data = assessments[current];
-  box.innerHTML = `<h2>${data.title}</h2>`;
+  const a=data[ass];
+  saveState();
+  document.getElementById('bar').style.width=((ass)/20*100)+'%';
 
-  data.questions.forEach((q,i)=>{
-    box.innerHTML += `
-      <div class="question">
+  if(document.getElementById('timerToggle').checked){
+    startTimer();
+  }else{
+    stopTimer();
+    document.getElementById('timer').textContent='';
+  }
+
+  let html=`<h2>${a.category} – Assessment ${ass+1}/20</h2>`;
+  a.questions.forEach((q,i)=>{
+    html+=`
+      <div class="q">
         <h3>${i+1}. ${q.q}</h3>
-        ${q.options.map((o,idx)=>`
-          <label class="option">
-            <input type="radio" name="q${i}" value="${idx}">
+        ${q.options.map((o,ix)=>`
+          <label class="opt">
+            <input type="radio" name="q${i}" value="${ix}">
             ${o}
-          </label>
-        `).join("")}
-      </div>
-    `;
+          </label>`).join('')}
+      </div>`;
   });
-
-  box.innerHTML += `<button onclick="submit()">Submit</button>`;
+  html+=`<button onclick="submit()">Submit</button>`;
+  document.getElementById('box').innerHTML=html;
 }
 
 function submit(){
-  const data = assessments[current];
-  let score = 0;
+  stopTimer();
+  const a=data[ass];
+  let score=0, review='';
 
-  data.questions.forEach((q,i)=>{
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    if(selected && Number(selected.value) === q.answer) score++;
+  a.questions.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name=q${i}]:checked`);
+    const ok=sel && +sel.value===q.answer;
+    if(ok){
+      score++;
+      totalScore++;
+      categoryScore[a.category]=(categoryScore[a.category]||0)+1;
+    }
+    review+=`
+      <div class="review">
+        <b>Q:</b> ${q.q}<br>
+        <b>Your:</b> ${sel?q.options[sel.value]:'Not answered'}<br>
+        <b>Correct:</b> ${q.options[q.answer]}<br>
+        <i>Explanation:</i> Focus on safety, calm communication & professionalism.
+      </div>`;
   });
 
-  document.getElementById("assessment").innerHTML += `
-    <div class="result">
-      <b>Score:</b> ${score} / 5<br><br>
-      ${score>=4 ? "Excellent 👍 You are doing great." :
-       score>=3 ? "Good 🙂 Keep going." :
-       "It's okay 💗 Learning is part of the journey."}
-      <br><br>
-      <button onclick="next()">Next Assessment</button>
-    </div>
-  `;
+  document.getElementById('box').innerHTML=
+    `<h2>Result ${score}/5</h2>
+     <div class="result">${score>=4?'Excellent 🌸':'Good 💗 Keep learning.'}</div>
+     ${review}
+     <button onclick="next()">Next Assessment</button>`;
 }
 
 function next(){
-  if(current < assessments.length-1){
-    current++;
+  ass++;
+  if(ass<20){
     loadAssessment();
   }else{
-    document.getElementById("assessment").innerHTML =
-      "<h2>🎉 All assessments completed</h2><p>You gave your best. Be proud.</p>";
+    showFinal();
   }
 }
 
-loadAssessment();
+function showFinal(){
+  let breakdown='';
+  Object.keys(categoryScore).forEach(c=>{
+    breakdown+=`<div>${c}: ${categoryScore[c]} correct</div>`;
+  });
+
+  document.getElementById('box').innerHTML=
+    `<h2>🎉 Completed</h2>
+     <p><b>Final Score:</b> ${totalScore}/100</p>
+     <div class="result">${breakdown}</div>
+     <button onclick="retry()">Retry Weak Areas</button>`;
+  localStorage.removeItem('mockProgress');
+}
+
+function retry(){
+  ass=0; totalScore=0; categoryScore={};
+  loadAssessment();
+}
+
+/* Timer */
+function startTimer(){
+  timeLeft=300;
+  document.getElementById('timer').textContent='05:00';
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    document.getElementById('timer').textContent=
+      Math.floor(timeLeft/60).toString().padStart(2,'0')+':' +
+      (timeLeft%60).toString().padStart(2,'0');
+    if(timeLeft<=0){
+      clearInterval(timerInterval);
+      submit();
+    }
+  },1000);
+}
+function stopTimer(){
+  clearInterval(timerInterval);
+}
+
+/* Save progress */
+function saveState(){
+  localStorage.setItem('mockProgress',JSON.stringify({
+    ass,totalScore,categoryScore
+  }));
+}
+function loadState(){
+  const s=localStorage.getItem('mockProgress');
+  if(s){
+    const p=JSON.parse(s);
+    ass=p.ass; totalScore=p.totalScore; categoryScore=p.categoryScore;
+  }
+}
 </script>
 
 </body>
