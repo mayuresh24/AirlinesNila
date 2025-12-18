@@ -207,6 +207,15 @@ function loadState(){
     ass=p.ass; totalScore=p.totalScore; categoryScore=p.categoryScore;
   }
 }
+  document.getElementById("timerToggle").addEventListener("change", function () {
+  if (this.checked) {
+    startTimer();
+  } else {
+    stopTimer();
+    document.getElementById("timer").textContent = "";
+  }
+});
+
 </script>
 
 </body>
