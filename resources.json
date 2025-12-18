@@ -40,6 +40,34 @@
     "type": "pdf",
     "tags": ["Interview", "Technical"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/TECHNICAL1.pdf"
+  },
+  {
+    "id": 7,
+    "title": "Airlines English MCQ Assignment",
+    "type": "pdf",
+    "tags": ["Interview", "English","MCQ"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines English MCQ Assignment.pdf"
+  },
+  {
+    "id": 8,
+    "title": "Airlines MCQ ASSIGNMENT 2",
+    "type": "pdf",
+    "tags": ["Interview", "English","MCQ"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines MCQ ASSIGNMENT 2.pdf"
+  },
+  {
+    "id": 9,
+    "title": "Workplace English MCQ",
+    "type": "pdf",
+    "tags": ["Interview", "English","MCQ"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Workplace English MCQ.pdf"
+  },
+  {
+    "id": 10,
+    "title": "Workplace English Practice",
+    "type": "pdf",
+    "tags": ["Interview", "English","workplace","Practice"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Workplace English Practice.pdf"
   }
 
 ]
