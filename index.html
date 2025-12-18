@@ -265,9 +265,7 @@
     function closeModal(){ document.getElementById('modal').classList.remove('open'); document.getElementById('modal').setAttribute('aria-hidden','true'); }
 
     function openRandomMock(){
-      const mocks = resources.filter(r=>r.tags && r.tags.includes('mock'));
-      if(mocks.length===0){ alert('No mock interviews found — add mock PDFs to the resources array (tag: mock).'); return; }
-      viewResource(mocks[Math.floor(Math.random()*mocks.length)].id);
+      window.location.href = "quick_revision.html";  
     }
 
     function copyShareLink(){
