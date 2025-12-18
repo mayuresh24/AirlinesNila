@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nai – Mock Interview Assessment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#ffe6ef;
+  --card:#fff0f5;
+  --accent:#e91e63;
+  --muted:#9b5c74;
+  --text:#3b1f2b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:linear-gradient(180deg,#ffd1e3,var(--bg));
+  color:var(--text);
+  padding:14px;
+}
+.container{max-width:900px;margin:auto}
+
+header{
+  text-align:center;
+  margin-bottom:18px;
+}
+h1{margin:0;font-size:22px}
+.sub{font-size:13px;color:var(--muted)}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.question{
+  margin-bottom:14px;
+}
+.question h3{
+  margin:0 0 8px;
+  font-size:15px;
+}
+.option{
+  display:block;
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:10px;
+  border:1px solid rgba(233,30,99,0.25);
+  cursor:pointer;
+}
+.option input{margin-right:8px}
+
+button{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:10px 16px;
+  border-radius:12px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.result{
+  margin-top:14px;
+  padding:12px;
+  border-radius:12px;
+  background:#ffd6e5;
+}
+
+footer{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <h1>✈️ Mock Interview Assessment</h1>
+  <div class="sub">Answer calmly • No rush • Learn as you go</div>
+</header>
+
+<div id="assessment" class="card"></div>
+
+<footer>
+Nai 💗 One step at a time
+</footer>
+
+</div>
+
+<script>
+const assessments = [
+  {
+    title:"Assessment 1",
+    questions:[
+      {
+        q:"What is the primary responsibility of a cabin crew?",
+        options:["Serving food","Passenger safety","Selling products","Announcements"],
+        answer:1
+      },
+      {
+        q:"STAR method is used to answer?",
+        options:["Technical questions","Behavioral questions","English grammar","MCQs"],
+        answer:1
+      },
+      {
+        q:"If a passenger is angry, what should you do first?",
+        options:["Argue","Ignore","Listen calmly","Call security"],
+        answer:2
+      },
+      {
+        q:"Life jacket should be inflated?",
+        options:["Inside aircraft","Outside aircraft","Before landing","Never"],
+        answer:1
+      },
+      {
+        q:"Good grooming reflects?",
+        options:["Personality","Professionalism","Fashion","Attitude"],
+        answer:1
+      }
+    ]
+  },
+  {
+    title:"Assessment 2",
+    questions:[
+      {
+        q:"Which quality is most important for cabin crew?",
+        options:["Confidence","Calmness","Height","Looks"],
+        answer:1
+      },
+      {
+        q:"English communication should be?",
+        options:["Fast","Complex","Clear & polite","Slang"],
+        answer:2
+      },
+      {
+        q:"Brace position is used to?",
+        options:["Sleep","Reduce injury","Comfort","Exercise"],
+        answer:1
+      },
+      {
+        q:"When unsure of an answer, you should?",
+        options:["Guess","Lie","Pause & think","Stay silent"],
+        answer:2
+      },
+      {
+        q:"Professional makeup should be?",
+        options:["Heavy","Bright","Neat & subtle","No makeup"],
+        answer:2
+      }
+    ]
+  }
+  // 👉 Continue adding till 20 assessments (100 questions)
+];
+
+let current = 0;
+
+function loadAssessment(){
+  const box = document.getElementById("assessment");
+  const data = assessments[current];
+  box.innerHTML = `<h2>${data.title}</h2>`;
+
+  data.questions.forEach((q,i)=>{
+    box.innerHTML += `
+      <div class="question">
+        <h3>${i+1}. ${q.q}</h3>
+        ${q.options.map((o,idx)=>`
+          <label class="option">
+            <input type="radio" name="q${i}" value="${idx}">
+            ${o}
+          </label>
+        `).join("")}
+      </div>
+    `;
+  });
+
+  box.innerHTML += `<button onclick="submit()">Submit</button>`;
+}
+
+function submit(){
+  const data = assessments[current];
+  let score = 0;
+
+  data.questions.forEach((q,i)=>{
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if(selected && Number(selected.value) === q.answer) score++;
+  });
+
+  document.getElementById("assessment").innerHTML += `
+    <div class="result">
+      <b>Score:</b> ${score} / 5<br><br>
+      ${score>=4 ? "Excellent 👍 You are doing great." :
+       score>=3 ? "Good 🙂 Keep going." :
+       "It's okay 💗 Learning is part of the journey."}
+      <br><br>
+      <button onclick="next()">Next Assessment</button>
+    </div>
+  `;
+}
+
+function next(){
+  if(current < assessments.length-1){
+    current++;
+    loadAssessment();
+  }else{
+    document.getElementById("assessment").innerHTML =
+      "<h2>🎉 All assessments completed</h2><p>You gave your best. Be proud.</p>";
+  }
+}
+
+loadAssessment();
+</script>
+
+</body>
+</html>
