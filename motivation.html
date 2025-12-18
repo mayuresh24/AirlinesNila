@@ -9,18 +9,18 @@
 
 <style>
 :root{
-  --bg:#0f1724;
-  --card:#0b1220;
-  --accent:#7c5cff;
-  --muted:#9aa4b2;
-  --soft:#1a2236;
+  --bg:#ffe6ef;        /* page background */
+  --card:#fff0f5;      /* main cards */
+  --soft:#ffd6e5;      /* inner soft boxes */
+  --accent:#e91e63;    /* highlights & important text */
+  --muted:#9b5c74;     /* secondary text */
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Inter,system-ui;
-  background:linear-gradient(180deg,#071023,var(--bg));
-  color:#e6eef8;
+  background:linear-gradient(180deg,#ffd1e3,var(--bg));
+  color:#3b1f2b;
   padding:16px;
 }
 .container{
@@ -101,6 +101,10 @@ footer{
   from{opacity:0; transform:translateY(6px)}
   to{opacity:1; transform:translateY(0)}
 }
+  h1, h2{
+  color:#b0004f;
+}
+
 </style>
 </head>
 
