@@ -82,7 +82,7 @@ let data, ass=0, totalScore=0;
 let categoryScore = {};
 let timerInterval, timeLeft=300;
 
-fetch('mock_questions_full.json')
+fetch('Mock_Questions_Full.json')
 .then(r=>r.json())
 .then(j=>{
   data=j.assessments;
