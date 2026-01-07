@@ -191,10 +191,14 @@ function renderList(){
   pdfs
     .filter(p=>{
       const textMatch = p.title.toLowerCase().includes(q);
-      
-      const tagMatch =tag === "all" || (Array.isArray(p.tags) && p.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase()));
+      const tagMatch =
+  tag === "all" ||
+  !Array.isArray(p.tags) ||     // if tags missing → allow
+  p.tags.length === 0 ||        // if empty → allow
+  p.tags.some(t => t.toLowerCase() === tag.toLowerCase());
 
-      return textMatch && tagMatch;
+return textMatch && tagMatch;
+
     })
     .forEach((p,i)=>{
       const div = document.createElement("div");
