@@ -193,8 +193,9 @@ function renderList(){
   const textMatch =
     !q || p.title.toLowerCase().includes(q);
 
-  const tagMatch =
-    tag === "all" || p.tags.includes(tag.toLowerCase());
+const tagMatch =
+  tag === "all" || p.tags.includes(tag);
+
 
   return textMatch && tagMatch;
 })
