@@ -134,18 +134,18 @@ footer{
 
 <div class="controls">
   <input id="search" placeholder="Search PDF..." oninput="renderList()">
-  <select id="filter" onchange="renderList()">
-    <option value="all">All</option>
-    <option value="interview">Interview</option>
-    <option value="mock">Mock</option>
-    <option value="mock">MCQ</option>
-    <option value="mock">Technical</option>
-    <option value="mock">English</option>
-    <option value="mock">Communication</option>
-    <option value="mock">Workplace</option>
-    <option value="assignment">Assignment</option>
-    <option value="grooming">Grooming</option>
-  </select>
+<select id="filter" onchange="renderList()">
+  <option value="all">All</option>
+  <option value="interview">Interview</option>
+  <option value="basics">Basics</option>
+  <option value="mock">Mock</option>
+  <option value="technical">Technical</option>
+  <option value="english">English</option>
+  <option value="communication">Communication</option>
+  <option value="workplace">Workplace</option>
+  <option value="assignment">Assignment</option>
+  <option value="grooming">Grooming</option>
+</select>
 </div>
 
 <div id="pdfList" class="list"></div>
@@ -191,7 +191,9 @@ function renderList(){
   pdfs
     .filter(p=>{
       const textMatch = p.title.toLowerCase().includes(q);
-      const tagMatch = tag==="all" || (p.tags||[]).includes(tag);
+      
+      const tagMatch =tag === "all" || (Array.isArray(p.tags) && p.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase()));
+
       return textMatch && tagMatch;
     })
     .forEach((p,i)=>{
