@@ -168,18 +168,26 @@ async function loadPDFs(){
     const res = await fetch(url);
     const data = await res.json();
 
-// access resources array correctly
-pdfs = (data.resources || [])
-  .filter(d => d.type === "pdf")
-  .slice(0, 50);
+    // normalize tags + type (lowercase)
+    pdfs = (Array.isArray(data) ? data : [])
+      .map(p => ({
+        ...p,
+        type: (p.type || "").toLowerCase(),
+        tags: Array.isArray(p.tags)
+          ? p.tags.map(t => t.toLowerCase())
+          : []
+      }))
+      .filter(p => p.type === "pdf")
+      .slice(0,50);
 
-renderList();
-
+    renderList();
   }catch(e){
+    console.error(e);
     document.getElementById("pdfList").innerHTML =
       "<div>Failed to load PDFs</div>";
   }
 }
+
 
 /* Render list */
 function renderList(){
