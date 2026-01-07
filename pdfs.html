@@ -168,9 +168,13 @@ async function loadPDFs(){
     const res = await fetch(url);
     const data = await res.json();
 
-    // take first 50 PDFs
-    pdfs = data.filter(d => d.type === "pdf").slice(0,50);
-    renderList();
+// access resources array correctly
+pdfs = (data.resources || [])
+  .filter(d => d.type === "pdf")
+  .slice(0, 50);
+
+renderList();
+
   }catch(e){
     document.getElementById("pdfList").innerHTML =
       "<div>Failed to load PDFs</div>";
