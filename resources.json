@@ -105,5 +105,12 @@
     "type": "pdf",
     "tags": ["Interview"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/STAR Principle[8th January 2026].pdf"
+  },
+  {
+    "id": 16,
+    "title": "Airlines Lessons with STAR Tech and Grooming",
+    "type": "pdf",
+    "tags": ["Interview","Practice","Technical"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines Lessons 25th Jan 2026.pdf"
   }
 ]
