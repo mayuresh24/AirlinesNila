@@ -126,5 +126,13 @@
     "type": "pdf",
     "tags": ["Interview","Practice","Technical"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines lessons 29th Jan 2026.pdf"
+  },
+  {
+    "id": 19,
+    "title": "AirLines SET for Interview practice",
+    "type": "pdf",
+    "tags": ["Interview","Practice"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines Lessons 9th February 2026.pdf"
   }
+
 ]
