@@ -140,7 +140,23 @@
     "type": "pdf",
     "tags": ["Interview","Practice","Technical"],
     "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines Lessons 10th February 2026.pdf"
+  },
+  {
+    "id": 21,
+    "title": "Psychological Trap Questions",
+    "type": "pdf",
+    "tags": ["Interview","Practice"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Psychological Trap Questions.pdf"
+  },
+  
+  {
+    "id": 22,
+    "title": "Airlines MCQ Mock Test",
+    "type": "pdf",
+    "tags": ["Interview","Practice","Technical"],
+    "url": "https://raw.githubusercontent.com/mayuresh24/AirlinesNila/main/pdfs/Airlines MCQ Mock Test.pdf"
   }
+
 
 
 ]
